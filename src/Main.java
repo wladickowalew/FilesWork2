@@ -1,6 +1,15 @@
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -73,8 +82,18 @@ public class Main extends javax.swing.JFrame {
         });
 
         readBTN.setText("прочитать");
+        readBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                readBTNActionPerformed(evt);
+            }
+        });
 
         writeBTN.setText("записать");
+        writeBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                writeBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,6 +158,16 @@ public class Main extends javax.swing.JFrame {
         renameFile(pathTF.getText());
     }//GEN-LAST:event_renameBTNActionPerformed
 
+    private void readBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readBTNActionPerformed
+        String text = readFile(pathTF.getText());
+        if (text != null)
+            contentTA.setText(text);
+    }//GEN-LAST:event_readBTNActionPerformed
+
+    private void writeBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_writeBTNActionPerformed
+        writeFile(pathTF.getText(), contentTA.getText());
+    }//GEN-LAST:event_writeBTNActionPerformed
+
     private void error(String text){
         JOptionPane.showMessageDialog(null, text, "Ошибка", 0);
     }
@@ -200,6 +229,39 @@ public class Main extends javax.swing.JFrame {
             success("Файл успешно переименован");
         }else{
             error("Ошибка при переименовании");
+        }
+    }
+    
+    private String readFile(String path){
+        File file = fileExists(path);
+        if (file == null) return null;
+        try {
+            InputStream stream = new FileInputStream(file.getPath());
+            BufferedReader in = new BufferedReader(new InputStreamReader(stream));
+            String text = "";
+            while (in.ready()) 
+                text += (in.readLine()+"\n");
+            in.close();
+            stream.close();
+            return text;
+        } catch (Exception ex) {
+            error("Ошибка чтения файла");
+            return null;
+        }
+    }
+    
+    private void writeFile(String path, String text){
+        File file = fileExists(path);
+        if (file == null) return;
+        try {
+            OutputStream stream = new FileOutputStream(file.getPath());
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(stream));
+            out.write(text);
+            out.close();
+            stream.close();
+            success("Успешная запись в файл");
+        } catch (Exception ex) {
+            error("Ошибка записи файла");
         }
     }
     

@@ -130,11 +130,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x43f;&#x440;&#x43e;&#x447;&#x438;&#x442;&#x430;&#x442;&#x44c;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="readBTNActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="writeBTN">
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x437;&#x430;&#x43f;&#x438;&#x441;&#x430;&#x442;&#x44c;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="writeBTNActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
