@@ -1,19 +1,4 @@
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -147,124 +132,27 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void createBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBTNActionPerformed
-        createNewFile(pathTF.getText());
+        LegaFile.createNewFile(pathTF.getText());
     }//GEN-LAST:event_createBTNActionPerformed
 
     private void removeBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBTNActionPerformed
-        removeFile(pathTF.getText());
+        LegaFile.removeFile(pathTF.getText());
     }//GEN-LAST:event_removeBTNActionPerformed
 
     private void renameBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameBTNActionPerformed
-        renameFile(pathTF.getText());
+        LegaFile.renameFile(pathTF.getText());
     }//GEN-LAST:event_renameBTNActionPerformed
 
     private void readBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readBTNActionPerformed
-        String text = readFile(pathTF.getText());
+        String text = LegaFile.readFile(pathTF.getText());
         if (text != null)
             contentTA.setText(text);
     }//GEN-LAST:event_readBTNActionPerformed
 
     private void writeBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_writeBTNActionPerformed
-        writeFile(pathTF.getText(), contentTA.getText());
+        LegaFile.writeFile(pathTF.getText(), contentTA.getText());
     }//GEN-LAST:event_writeBTNActionPerformed
-
-    private void error(String text){
-        JOptionPane.showMessageDialog(null, text, "Ошибка", 0);
-    }
-    
-    private void success(String text){
-        JOptionPane.showMessageDialog(null, text, "Ура, заработало", 1);
-    }
-    
-    private String readPath(String path){
-        path = path.trim();
-        if (path.isEmpty()){
-            error("Не введён путь");
-            return null;
-        }else{
-            return path;
-        }
-    }
-    
-    private File fileExists(String path){
-        path = readPath(path);
-        if (path == null) return null;
-        File file = new File(path);
-        if (file.exists()){
-            return file;
-        }else{
-            error("404 File not Found");
-            return null;
-        }
-    }
-    
-    private void createNewFile(String path){
-        path = readPath(path);
-        if (path == null) return;
-        File file = new File(path);
-        try {
-            file.createNewFile();
-            success("Файл успешно создан");
-        } catch (IOException ex) {
-            error("Ошибка при создании файла");
-        }
-    }
-    
-    private void removeFile(String path){
-        File file = fileExists(path);
-        if (file == null) return;
-        file.delete();
-        success("Файл успешно удалён");
-    }
-    
-    private void renameFile(String path){
-        File file = fileExists(path);
-        if (file == null) return;
-        String new_name = JOptionPane.showInputDialog("Введите новое имя");
-        if (new_name == null) return;
-        new_name = readPath(new_name);
-        if (new_name == null) return;
-        File nf = new File(file.getParent() + "\\" + new_name);
-        if (file.renameTo(nf)){
-            success("Файл успешно переименован");
-        }else{
-            error("Ошибка при переименовании");
-        }
-    }
-    
-    private String readFile(String path){
-        File file = fileExists(path);
-        if (file == null) return null;
-        try {
-            InputStream stream = new FileInputStream(file.getPath());
-            BufferedReader in = new BufferedReader(new InputStreamReader(stream));
-            String text = "";
-            while (in.ready()) 
-                text += (in.readLine()+"\n");
-            in.close();
-            stream.close();
-            return text;
-        } catch (Exception ex) {
-            error("Ошибка чтения файла");
-            return null;
-        }
-    }
-    
-    private void writeFile(String path, String text){
-        File file = fileExists(path);
-        if (file == null) return;
-        try {
-            OutputStream stream = new FileOutputStream(file.getPath());
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(stream));
-            out.write(text);
-            out.close();
-            stream.close();
-            success("Успешная запись в файл");
-        } catch (Exception ex) {
-            error("Ошибка записи файла");
-        }
-    }
-    
+ 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
